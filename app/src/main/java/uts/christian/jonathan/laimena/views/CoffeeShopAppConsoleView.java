@@ -8,7 +8,7 @@ public class CoffeeShopAppConsoleView {
         System.out.println("\n=== DAFTAR MENU COFFEE SHOP ===");
         for (MenuItem item : daftarMenu) {
             System.out.printf("[%s] %s - Rp%.0f (Stok: %d)\n", 
-                item.getId(), item.getName(), item.getHargaBase(), item.getStok());
+                item.getId(), item.getNama(), item.getHargaBase(), item.getStok());
         }
         System.out.println("===============================");
     }
