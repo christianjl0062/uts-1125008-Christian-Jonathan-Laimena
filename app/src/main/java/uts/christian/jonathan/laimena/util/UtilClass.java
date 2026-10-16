@@ -2,17 +2,20 @@ package uts.christian.jonathan.laimena.util;
 import java.util.Scanner;
 
 public class UtilClass {
-    private static final Scanner input = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
-    public static int readInt() {
-        return input.nextInt();
+    public static String inputString(String pesan) {
+        System.out.print(pesan);
+        return scanner.next();
     }
 
-    public static double readDouble() {
-        return input.nextDouble();
+    public static int inputInt(String pesan) {
+        System.out.print(pesan);
+        return scanner.nextInt();
     }
 
-    public static String readString() {
-        return input.nextLine();
+    public static double inputDouble(String pesan) {
+        System.out.print(pesan);
+        return scanner.nextDouble();
     }
 }

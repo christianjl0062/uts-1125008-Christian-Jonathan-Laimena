@@ -3,13 +3,27 @@
  */
 package uts.christian.jonathan.laimena;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import uts.christian.jonathan.laimena.controllers.CoffeeController;
 import uts.christian.jonathan.laimena.controllers.CoffeeShopAppController;
+import uts.christian.jonathan.laimena.models.Kopi;
+import uts.christian.jonathan.laimena.models.MenuItem;
+import uts.christian.jonathan.laimena.models.Roti;
+import uts.christian.jonathan.laimena.models.Teh;
 import uts.christian.jonathan.laimena.views.CoffeeShopAppConsoleView;
 
 public class App {
     public static void main(String[] args) {
+        List<MenuItem> daftarMenu = new ArrayList<>();
+        daftarMenu.add(new Kopi("M-01", "Kopi Susu", 18000, 5));
+        daftarMenu.add(new Teh("M-02", "Teh Tarik", 12000, 10));
+        daftarMenu.add(new Roti("M-03", "Roti Cokelat", 15000, 8));
+
         CoffeeShopAppConsoleView view = new CoffeeShopAppConsoleView();
-        CoffeeShopAppController controller = new CoffeeShopAppController(view);
+        CoffeeShopAppController controller = new CoffeeShopAppController(view, daftarMenu);
+
         controller.runApp();
     }
 }
