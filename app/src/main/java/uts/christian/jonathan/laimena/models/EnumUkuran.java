@@ -5,7 +5,7 @@ public enum EnumUkuran {
     MEDIUM(2000),
     LARGE(4000);
 
-    private final double tambahanHarga;
+    private double tambahanHarga;
 
     EnumUkuran(double tambahanHarga) {
         this.tambahanHarga = tambahanHarga;

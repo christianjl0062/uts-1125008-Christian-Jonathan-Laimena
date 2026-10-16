@@ -24,25 +24,25 @@ public class CoffeeShopAppController {
     }
 
     private List<MenuItem> initializeMenu() {
-        List<MenuItem> menu = new ArrayList<>();
-        menu.add(new Kopi("M-01", "Kopi Susu", 18000, 5));
-        menu.add(new Teh("M-02", "Teh Tarik", 12000, 10));
-        menu.add(new Roti("M-03", "Roti Cokelat", 15000, 8));
-        return menu;
+        List<MenuItem> menuCoffeeShop = new ArrayList<>();
+        menuCoffeeShop.add(new Kopi("M-01", "Kopi Susu", 18000, 5));
+        menuCoffeeShop.add(new Teh("M-02", "Teh Tarik", 12000, 10));
+        menuCoffeeShop.add(new Roti("M-03", "Roti Cokelat", 15000, 8));
+        return menuCoffeeShop;
     }
 
     public void runApp() {
         boolean lanjut = true;
         while (lanjut) {
-            view.tampilkanDaftarMenu(daftarMenu);
+            view.showDaftarMenu(daftarMenu);
 
-            MenuItem selectedItem = null;
-            while (selectedItem == null) {
+            MenuItem selectedMenuItem = null;
+            while (selectedMenuItem == null) {
                 try {
                     String idMenu = UtilClass.inputString("Masukkan ID Menu yang ingin anda pesan (tuliskan id nya secara benar): ");
-                    selectedItem = cariMenu(idMenu);
+                    selectedMenuItem = cariMenu(idMenu);
                 } catch (MenuTidakDitemukanException e) {
-                    view.tampilkanPesan(e.getMessage() + " Silakan coba lagi.");
+                    view.showPesan(e.getMessage() + " Maaf pengguna, silahkan coba lagi.");
                 }
             }
 
@@ -52,48 +52,55 @@ public class CoffeeShopAppController {
                 try {
                     jumlah = UtilClass.inputInt("Masukkan jumlah pesanan: ");
                     if (jumlah <= 0) {
-                        throw new InputTidakValidException("Jumlah pesanan harus lebih besar dari 0!");
+                        throw new InputTidakValidException("Jumlah pesanan harus > 0!");
                     }
-                    if (jumlah > selectedItem.getStok()) {
-                        throw new StokTidakCukupException("Stok tidak cukup! Sisa stok: " + selectedItem.getStok());
+                    if (jumlah > selectedMenuItem.getStok()) {
+                        throw new StokTidakCukupException("Stok tidak cukup! Sisa stok: " + selectedMenuItem.getStok());
                     }
                     jumlahPesananValid = true;
                 } catch (InputTidakValidException | StokTidakCukupException e) {
-                    view.tampilkanPesan(e.getMessage() + " Silakan input ulang.");
+                    view.showPesan(e.getMessage() + " Maaf pengguna, input nya belum benar.");
                 }
             }
 
-            List<Integer> customize = new ArrayList<>();
-            if (selectedItem instanceof Kopi) {
-                customize.add(UtilClass.inputInt("Masukkan jumlah Rum (0-1): "));
-                customize.add(UtilClass.inputInt("Masukkan jumlah Es (0-5): "));
-                customize.add(UtilClass.inputInt("Masukkan jumlah Gula (0-5): "));
-                customize.add(UtilClass.inputInt("Masukkan jumlah Karamel (0-5): "));
-            } else if (selectedItem instanceof Teh) {
-                customize.add(UtilClass.inputInt("Masukkan jumlah Boba (0-3): "));
-                customize.add(UtilClass.inputInt("Masukkan jumlah Es (0-5): "));
-                customize.add(UtilClass.inputInt("Masukkan jumlah Gula (0-5): "));
-                customize.add(UtilClass.inputInt("Masukkan jumlah Karamel (0-5): "));
-            } else if (selectedItem instanceof Roti) {
-                customize.add(UtilClass.inputInt("Masukkan jumlah Gula (0-5): "));
-                customize.add(UtilClass.inputInt("Masukkan jumlah Meses (0-5): "));
-                customize.add(UtilClass.inputInt("Masukkan jumlah Karamel (0-5): "));
+            List<Integer> customizeMenuItem = new ArrayList<>();
+            if (selectedMenuItem instanceof Kopi) {
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Rum (nilai = 0-1): "));
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Es (nilai = 0-5): "));
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Gula (nilai = 0-5): "));
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Karamel (nilai = 0-5): "));
+            } else if (selectedMenuItem instanceof Teh) {
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Boba (nilai = 0-3): "));
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Es (nilai = 0-5): "));
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Gula (nilai = 0-5): "));
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Karamel (nilai = 0-5): "));
+            } else if (selectedMenuItem instanceof Roti) {
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Gula (nilai = 0-5): "));
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Meses (nilai = 0-5): "));
+                customizeMenuItem.add(UtilClass.inputInt("Masukkan jumlah Karamel (nilai = 0-5): "));
             }
-            selectedItem.customize(customize);
+            selectedMenuItem.customize(customizeMenuItem);
 
-            view.tampilkanMenuUkuran();
+            view.showDaftarMenu(daftarMenu);
             int pilihanUkuran = UtilClass.inputInt("Pilihan (1-3): ");
             EnumUkuran ukuran = EnumUkuran.SMALL;
-            if (pilihanUkuran == 2) ukuran = EnumUkuran.MEDIUM;
-            else if (pilihanUkuran == 3) ukuran = EnumUkuran.LARGE;
 
-            double hargaSatuanCustom = selectedItem.hitungHargaTotal();
-            double biayaTambahanKustomSatuan = hargaSatuanCustom - selectedItem.getHargaBase();
-            double totalHarga = selectedItem.hitungHargaTotal(jumlah, ukuran) + (biayaTambahanKustomSatuan * jumlah);
+            if (pilihanUkuran == 2) {
+                ukuran = EnumUkuran.MEDIUM;
+            } else if (pilihanUkuran == 3) {
+                ukuran = EnumUkuran.LARGE;
+            } else {
+                view.showPesan("Error!!! pilihan ukuran anda tidak valid.");
+            }
 
-            selectedItem.kurangiStok(jumlah);
+            double hargaSatuanCustom = selectedMenuItem.hitungHargaTotal();
+            double biayaTambahanCustomSatuan = hargaSatuanCustom - selectedMenuItem.getHargaBase();
+            double totalHarga = selectedMenuItem.hitungHargaTotal(jumlah, ukuran) 
+            + (biayaTambahanCustomSatuan * jumlah);
 
-            view.cetakStruk(selectedItem, jumlah, totalHarga);
+            selectedMenuItem.kurangiStok(jumlah);
+
+            view.cetakStruk(selectedMenuItem, jumlah, totalHarga);
             lanjut = false;
         }
     }
