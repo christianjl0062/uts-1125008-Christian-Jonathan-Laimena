@@ -1,7 +1,7 @@
 package uts.christian.jonathan.laimena.models;
 import java.util.List;
 
-public class Kopi extends MenuItem implements Customizable {
+public class Kopi extends MenuItem {
     private int rum;
     private int es;
     private int gula;
